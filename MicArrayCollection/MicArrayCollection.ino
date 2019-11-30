@@ -1,12 +1,5 @@
 //softare created with the help of arduion.cc/en/Reference
 
-#include <SoftwareSerial.h>
-
-const int rxPin = 0;
-const int txPin = 1;
-SoftwareSerial tr(rxPin, txPin);
-
-
 //Microphone Pin Assignments
 const int micRF = A4;
 const int micRB = A3;
@@ -18,7 +11,7 @@ boolean primingBitRPI = false;
 boolean primingBitTR = false;
 
 const int sampleWindowWidth = 1000;//length of each window check in milliseconds
-
+const int wait = 10;
 void setup(){
   pinMode(micRF, INPUT);
   pinMode(micRB, INPUT);
@@ -26,22 +19,18 @@ void setup(){
   pinMode(micLB, INPUT);
 
   Serial.begin(9600);//serial connected to Raspberry Pi
-  tr.begin(9600);//serial connected to Testing Rig
 }
 
 void loop(){
   //Look for primer bits from TR and RPI
   char RPIbit = Serial.read();
-  char TRbit = tr.read();
-  if(RPIbit != ' '){
+  if(RPIbit != 'ready'){
     primingBitRPI = true;
-  }
-  if(TRbit != ' '){
-    primingBitTR = true;
   }
   
   //record audio if both other devices are ready
-  if(primingBitRPI && primingBitTR){
+  if(primingBitRPI){
+    delay(wait);//delay a few seconds for the audio rig to be ready
     long startPt = millis();//starting time
     long currentPt = millis();
     long progress = currentPt - startPt;
