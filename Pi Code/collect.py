@@ -1,9 +1,12 @@
 import serial
 from datetime import datetime
+import numpy as np
 
 #setup serials for the testing rig and microphone array
 TRport = '/dev/ttyACMO'
 MAport = '/dev/ttyACMO'
+sampleWindow = 100
+bits = 10
 
 check = 'ch'
 
@@ -11,26 +14,46 @@ def collect(angle, increment):
     # for each angle, send angle to TR
     # wait for response from TR
     # once received, if TR went to specified angle
-    bool TRres = serialTR(angle, True)
+    bool TRres = serialHS(angle, True, TRport, check)
     if TRres:
         return
 
     # send bit to MA, wait for response
     # once received
- 
+    bool MAres = serialHS(check, True, MAport, check)
+    if MAres:
+        return
 
-def serialTR(message, needsCheck, port, expected):
+    # send priming bit to MA and testing rig, telling them to go
+    # then wait for responding data on the arduino to come back
+    # once received, restart
+    serialSend('prime', TRport)
+    serialSend('prime', MAport)
+    return serialReceive(MAport, bits)
+
+def serialReceive(port, bits):
+    input = np.array()
+    with serial.Serial(port, 9600) as ser:
+        for i in range(0, sampleWindow):
+            input.append(ser.read(bits), axis=0)
+    return input
+
+def serialSend(message, port):
+    with serial.Serial(port, 9600) as ser:
+        ser.write(message)
+
+def serialHS(message, needsCheck, port, expected):#handshake
     bool quit = False
     with serial.Serial(port, 9600) as ser:
         ser.write(bin(message))
         print('--------------------------')
-        print('-----TR Message SENT!-----')
+        print('------ Message SENT! -----')
         print('--------------------------')
         if needsCheck:
             SERprimerBit = ser.read(timeout = 5)
             if SERprimerBit == None:
                 print('--------------------------')
-                print('----TR Receiving ERROR----')
+                print('----- Receiving ERROR ----')
                 print('--------------------------')
                 quit = True
             elif SERprimerBit != expected:
