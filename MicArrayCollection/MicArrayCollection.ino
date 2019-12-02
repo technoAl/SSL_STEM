@@ -8,7 +8,6 @@ const int micLB = A1;
 
 //Receiving Bits from RPI and TR
 boolean primingBitRPI = false;
-boolean primingBitTR = false;
 
 const int sampleWindowWidth = 1000;//length of each window check in milliseconds
 const int wait = 10;
@@ -26,21 +25,24 @@ void loop(){
   char RPIbit = Serial.read();
   if(RPIbit != 'ready'){
     primingBitRPI = true;
+    Serial.write("ch")
   }
   
   //record audio if both other devices are ready
   if(primingBitRPI){
-    delay(wait);//delay a few seconds for the audio rig to be ready
-    long startPt = millis();//starting time
-    long currentPt = millis();
-    long progress = currentPt - startPt;
-    while(progress < sampleWindowWidth){//artificially create sample window
-      recordBits(progress);//record bits
+    char readyBit = Serial.read()
+    if(readyBit == "ready"){
+      delay(wait);//delay a few seconds for the audio rig to be ready
+      long startPt = millis();//starting time
+      long currentPt = millis();
+      long progress = currentPt - startPt;
+      while(progress < sampleWindowWidth){//artificially create sample window
+        recordBits(progress);//record bits
+      }
+  
+      //reset the device after the window was sampled
+      primingBitRPI = false;
     }
-
-    //reset the device after the window was sampled
-    primingBitRPI = false;
-    primingBitTR = false;
   }
   
 }
