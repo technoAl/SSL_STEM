@@ -34,10 +34,9 @@ void loop(){
     if(readyBit == "ready"){
       delay(wait);//delay a few seconds for the audio rig to be ready
       long startPt = millis();//starting time
-      long currentPt = millis();
-      long progress = currentPt - startPt;
       while(progress < sampleWindowWidth){//artificially create sample window
         recordBits(progress);//record bits
+        progress = millis() - startPt;
       }
   
       //reset the device after the window was sampled
@@ -53,7 +52,7 @@ void recordBits(long progress){
     float audRB = analogRead(micRB);
     float audLF = analogRead(micLF);
     float audLB = analogRead(micLB);
-
+    
     //send data to raspberry pi
     Serial.println("Time ");
     Serial.println(progress);
