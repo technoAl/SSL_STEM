@@ -9,7 +9,9 @@ const int micLB = A1;
 //Receiving Bits from RPI and TR
 boolean primingBitRPI = false;
 
-const int sampleWindowWidth = 1000;//length of each window check in milliseconds
+const int samples = 128;
+const int freq = 1000;
+const int sampleWindowWidth = round(1000000*(1.0/freq));//length of each window check in milliseconds
 const int wait = 10;
 void setup(){
   pinMode(micRF, INPUT);
@@ -33,10 +35,14 @@ void loop(){
     char readyBit = Serial.read()
     if(readyBit == "ready"){
       delay(wait);//delay a few seconds for the audio rig to be ready
-      long startPt = millis();//starting time
-      while(progress < sampleWindowWidth){//artificially create sample window
-        recordBits(progress);//record bits
-        progress = millis() - startPt;
+      int currentSample = 0;
+      while(currentSample < samples){//artificially create sample window
+        recordBits(currentSample);//record bits
+        int progress = millis();
+        while(millis() < progress + sampleWindowWidth){
+          //only progress after sample rate is over
+        }
+        currentSample++;
       }
   
       //reset the device after the window was sampled

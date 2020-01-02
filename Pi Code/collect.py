@@ -1,6 +1,8 @@
 import serial
 from datetime import datetime
 import numpy as np
+import csv
+from csv import writer
 
 #setup serials for the testing rig and microphone array
 TRport = '/dev/ttyACMO'
@@ -10,7 +12,7 @@ bits = 10
 
 check = 'ch'
 
-def collect(angle, increment):
+def collect(angle):
     # for each angle, send angle to TR
     # wait for response from TR
     # once received, if TR went to specified angle
@@ -68,6 +70,12 @@ def serialHS(message, needsCheck, port, expected):#handshake
     return quit
 
 if __name__ == '__init__':
+    sample_data = collect(10)
+    name = './test.csv'
+    with open(name,'w', newline='') as csv:
+        writer = csv.writer(csvfile, delimiter=' ')
+        writer.writerow(sample_data)
+
 
 
 #tasks

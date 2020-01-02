@@ -1,5 +1,3 @@
-
-
 //Declare pin functions on Arduino
 #define stp 2
 #define dir 3
