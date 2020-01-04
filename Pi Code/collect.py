@@ -12,14 +12,15 @@ bits = 10
 
 check = 'ch'
 
-def collect(angle):
+def collect(steps):
     # for each angle, send angle to TR
     # wait for response from TR
     # once received, if TR went to specified angle
-    bool TRres = serialHS(angle, True, TRport, check)
-    if TRres:
-        return
-
+    # bool TRres = serialHS(angle, True, TRport, check)
+    # if TRres:
+    #     return
+    serialSend(TRport, bin(1))//send to forward
+    serialSend(TRport, bin(1))//send one step
     # send bit to MA, wait for response
     # once received
     bool MAres = serialHS(check, True, MAport, check)

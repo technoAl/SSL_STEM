@@ -25,10 +25,8 @@ void setup() {
   Serial.println();
   //Print function list for user selection
   Serial.println("Enter number for control option:");
-  Serial.println("1. Turn at default microstep mode.");
-  Serial.println("2. Reverse direction at default microstep mode.");
-  Serial.println("3. Turn at 1/16th microstep mode.");
-  Serial.println("4. Step forward and reverse directions.");
+  Serial.println("1 for forward");
+  Serial.println("2 for micro");
   Serial.println();
 }
 //Main loop
@@ -42,99 +40,51 @@ void loop() {
       }
       else if(user_input =='2')
       {
-        ReverseStepDefault();
-      }
-      else if(user_input =='3')
-      {
         SmallStepMode();
-      }
-      else if(user_input =='4')
-      {
-        ForwardBackwardStep();
       }
       else
       {
-        Serial.println("Invalid option entered.");
+        Serial.println("Bad Communication");
       }
       resetBEDPins();
   }
 }
 
-void ReverseStepDefault()
-{
-  Serial.println("Moving in reverse at default step mode.");
-  digitalWrite(dir, HIGH); //Pull direction pin high to move in "reverse"
-  for(x= 0; x<1000; x++)  //Loop the stepping enough times for motion to be visible
-  {
-    digitalWrite(stp,HIGH); //Trigger one step
-    delay(1);
-    digitalWrite(stp,LOW); //Pull step pin low so it can be triggered again
-    delay(1);
-  }
-  Serial.println("Enter new option");
-  Serial.println();
-}
-//Default microstep mode function
 void StepForwardDefault()
 {
-  Serial.println("Moving forward at default step mode.");
+  Serial.println("input steps");
+  char input = Serial.read(); //Read user input
   digitalWrite(dir, LOW); //Pull direction pin low to move "forward"
-  for(x= 0; x<1000; x++)  //Loop the forward stepping enough times for motion to be visible
+  for(int i= 0; x<input; i++)  //Loop the forward stepping enough times for motion to be visible
   {
     digitalWrite(stp,HIGH); //Trigger one step forward
     delay(1);
     digitalWrite(stp,LOW); //Pull step pin low so it can be triggered again
     delay(1);
   }
-  Serial.println("Enter new option");
+  Serial.println("done");
   Serial.println();
 }
-//Forward/reverse stepping function
-void ForwardBackwardStep()
-{
-  Serial.println("Alternate between stepping forward and reverse.");
-  for(x= 1; x<5; x++)  //Loop the forward stepping enough times for motion to be visible
-  {
-    //Read direction pin state and change it
-    state=digitalRead(dir);
-    if(state == HIGH)
-    {
-      digitalWrite(dir, LOW);
-    }
-    else if(state ==LOW)
-    {
-      digitalWrite(dir,HIGH);
-    }
 
-    for(y=0; y<1000; y++)
-    {
-      digitalWrite(stp,HIGH); //Trigger one step
-      delay(1);
-      digitalWrite(stp,LOW); //Pull step pin low so it can be triggered again
-      delay(1);
-    }
-  }
-  Serial.println("Enter new option");
-  Serial.println();
-}
 void SmallStepMode()
 {
-  Serial.println("Stepping at 1/16th microstep mode.");
+  Serial.println("Stepping at 1/16th microstep mode, input amount of steps");
+  char input = Serial.read(); //Read user input
   digitalWrite(dir, LOW); //Pull direction pin low to move "forward"
   digitalWrite(MS1, HIGH); //Pull MS1,MS2, and MS3 high to set logic to 1/16th microstep resolution
   digitalWrite(MS2, HIGH);
   digitalWrite(MS3, HIGH);
-  for(x= 0; x<1000; x++)  //Loop the forward stepping enough times for motion to be visible
+  for(int i= 0; i<input; i++)  //Loop the forward stepping enough times for motion to be visible
   {
     digitalWrite(stp,HIGH); //Trigger one step forward
     delay(1);
     digitalWrite(stp,LOW); //Pull step pin low so it can be triggered again
     delay(1);
   }
-  Serial.println("Enter new option");
+  Serial.println("done");
   Serial.println();
 }
-void resetBEDPins()
+void resetBEDPins()//reset keeps everything clean
 {
   digitalWrite(stp, LOW);
   digitalWrite(dir, LOW);
