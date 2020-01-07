@@ -5,6 +5,7 @@
 #define MS2 5
 #define MS3 6
 #define EN  7
+#define SP  9
 
 //Declare variables for functions
 char user_input;
@@ -19,6 +20,7 @@ void setup() {
   pinMode(MS2, OUTPUT);
   pinMode(MS3, OUTPUT);
   pinMode(EN, OUTPUT);
+  pinMode(SP, OUTPUT);
   resetBEDPins(); //Set step, direction, microstep and enable pins to default states
   Serial.begin(9600); //Open Serial connection for debugging
   Serial.println("Begin motor control");
@@ -37,17 +39,28 @@ void loop() {
       if (user_input =='1')
       {
          StepForwardDefault();
+         Serial.print("entered");
       }
       else if(user_input =='2')
       {
         SmallStepMode();
+        Serial.print("entered");
       }
       else
       {
         Serial.println("Bad Communication");
       }
       resetBEDPins();
+      if(user_input == 'p'){
+        playFrequency(440);
+      }
   }
+}
+
+void playFrequency(int tones){
+  tone(SP, tones);
+  delay(50);
+  digitalWrite(SP, LOW);//pull pin down
 }
 
 void StepForwardDefault()

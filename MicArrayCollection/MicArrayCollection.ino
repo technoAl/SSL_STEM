@@ -18,22 +18,19 @@ void setup(){
   pinMode(micRB, INPUT);
   pinMode(micLF, INPUT);
   pinMode(micLB, INPUT);
-
   Serial.begin(9600);//serial connected to Raspberry Pi
 }
 
 void loop(){
   //Look for primer bits from TR and RPI
   char RPIbit = Serial.read();
-  if(RPIbit != 'ready'){
+  if(RPIbit == 'r'){
     primingBitRPI = true;
-    Serial.write("ch")
+    Serial.write("c")
   }
   
   //record audio if both other devices are ready
   if(primingBitRPI){
-    char readyBit = Serial.read()
-    if(readyBit == "ready"){
       delay(wait);//delay a few seconds for the audio rig to be ready
       int currentSample = 0;
       while(currentSample < samples){//artificially create sample window
@@ -44,10 +41,8 @@ void loop(){
         }
         currentSample++;
       }
-  
       //reset the device after the window was sampled
       primingBitRPI = false;
-    }
   }
   
 }

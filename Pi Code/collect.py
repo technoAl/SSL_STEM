@@ -23,15 +23,15 @@ def collect(steps):
     serialSend(TRport, bin(1))//send one step
     # send bit to MA, wait for response
     # once received
-    bool MAres = serialHS(check, True, MAport, check)
-    if MAres:
-        return
+    # bool MAres = serialHS(check, True, MAport, check)
+    # if MAres:
+    #     return
 
     # send priming bit to MA and testing rig, telling them to go
     # then wait for responding data on the arduino to come back
     # once received, restart
-    serialSend('prime', TRport)
-    serialSend('prime', MAport)
+    serialSend('p', TRport) #p for prime
+    serialSend('r', MAport) #r for ready
     return serialReceive(MAport, bits)
 
 def serialReceive(port, bits):
