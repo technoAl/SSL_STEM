@@ -34,7 +34,7 @@ def collect(steps):
     serialSend('r', MAport) #r for ready
     return serialReceive(MAport, bits)
 
-def serialReceive(port, bits):
+def serialReceive(port, bits): #check and make sure it works
     input = np.array()
     with serial.Serial(port, 9600) as ser:
         for i in range(0, sampleWindow):
@@ -45,7 +45,7 @@ def serialSend(message, port):
     with serial.Serial(port, 9600) as ser:
         ser.write(message)
 
-def serialHS(message, needsCheck, port, expected):#handshake
+def serialHS(message, needsCheck, port, expected):#handshake unsure if needed currently
     bool quit = False
     with serial.Serial(port, 9600) as ser:
         ser.write(bin(message))
@@ -70,12 +70,41 @@ def serialHS(message, needsCheck, port, expected):#handshake
             quit = False
     return quit
 
+
 if __name__ == '__init__':
-    sample_data = collect(10)
-    name = './test.csv'
-    with open(name,'w', newline='') as csv:
-        writer = csv.writer(csvfile, delimiter=' ')
-        writer.writerow(sample_data)
+    for i in range(1,401):
+        sample_data = collect(1)
+        quadrant = 0
+        eight = 0;
+        if i in range(1, 101):
+            quadrant = 1
+            if i < 51:
+                eight = 1
+            else:
+                eight = 2
+        elif i in range(101, 201):
+            quadrant = 2
+            if i < 151:
+                eight = 3
+            else:
+                eight = 4
+        elif i in range(201, 301):
+            quadrant = 3
+            if i < 251:
+                eight = 5
+            else:
+                eight = 6
+        elif i in range(301, 401):
+            quadrant = 4
+            if i < 351:
+                eight = 7
+            else:
+                eight = 8
+
+        name = './test.csv'
+        with open(name,'w', newline='') as csv:
+            writer = csv.writer(csvfile, delimiter=' ')
+            writer.writerow(sample_data + quadrant + eighth + i)
 
 
 

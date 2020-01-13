@@ -55,7 +55,7 @@ void loop() {
         playFrequency(440);
       }
   }
-}
+  }
 
 void playFrequency(int tones){
   tone(SP, tones);
