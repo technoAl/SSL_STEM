@@ -1,12 +1,14 @@
 import serial
+import time
+import sys
 from datetime import datetime
 import numpy as np
 import csv
 from csv import writer
 
 #setup serials for the testing rig and microphone array
-TRport = '/dev/ttyACMO'
-MAport = '/dev/ttyACMO'
+TRport = '/dev/ttyACM0'
+#MAport = '/dev/ttyACMO'
 sampleWindow = 100
 bits = 10
 
@@ -19,8 +21,8 @@ def collect(steps):
     # bool TRres = serialHS(angle, True, TRport, check)
     # if TRres:
     #     return
-    serialSend(TRport, bin(1))//send to forward
-    serialSend(TRport, bin(1))//send one step
+    serialSend(TRport, b'1')#send to forward
+    print('someth')
     # send bit to MA, wait for response
     # once received
     # bool MAres = serialHS(check, True, MAport, check)
@@ -30,9 +32,9 @@ def collect(steps):
     # send priming bit to MA and testing rig, telling them to go
     # then wait for responding data on the arduino to come back
     # once received, restart
-    serialSend('p', TRport) #p for prime
-    serialSend('r', MAport) #r for ready
-    return serialReceive(MAport, bits)
+    #serialSend('p', TRport) #p for prime
+    # serialSend('r', MAport) #r for ready
+    # return serialReceive(MAport, bits)
 
 def serialReceive(port, bits): #check and make sure it works
     input = np.array()
@@ -41,12 +43,14 @@ def serialReceive(port, bits): #check and make sure it works
             input.append(ser.read(bits), axis=0)
     return input
 
-def serialSend(message, port):
-    with serial.Serial(port, 9600) as ser:
+def serialSend(port, message):
+    with serial.Serial(port, baudrate = 9600, timeout = 1) as ser:
+        ser.write(message)
+        time.sleep(5)
         ser.write(message)
 
 def serialHS(message, needsCheck, port, expected):#handshake unsure if needed currently
-    bool quit = False
+    quit = False
     with serial.Serial(port, 9600) as ser:
         ser.write(bin(message))
         print('--------------------------')
@@ -64,47 +68,49 @@ def serialHS(message, needsCheck, port, expected):#handshake unsure if needed cu
                 print('----??????????????????----')
                 print('--------------------------')
                 quit = True
-            else
+            else:
                 quit = False
         else:
             quit = False
     return quit
 
 
-if __name__ == '__init__':
-    for i in range(1,401):
-        sample_data = collect(1)
-        quadrant = 0
-        eight = 0;
-        if i in range(1, 101):
-            quadrant = 1
-            if i < 51:
-                eight = 1
-            else:
-                eight = 2
-        elif i in range(101, 201):
-            quadrant = 2
-            if i < 151:
-                eight = 3
-            else:
-                eight = 4
-        elif i in range(201, 301):
-            quadrant = 3
-            if i < 251:
-                eight = 5
-            else:
-                eight = 6
-        elif i in range(301, 401):
-            quadrant = 4
-            if i < 351:
-                eight = 7
-            else:
-                eight = 8
-
-        name = './test.csv'
-        with open(name,'w', newline='') as csv:
-            writer = csv.writer(csvfile, delimiter=' ')
-            writer.writerow(sample_data + quadrant + eighth + i)
+if __name__ == '__main__':
+    print('yo');
+    collect(1)
+    # for i in range(1,401):
+    #     sample_data = collect(1)
+    #     quadrant = 0
+    #     eight = 0;
+    #     if i in range(1, 101):
+    #         quadrant = 1
+    #         if i < 51:
+    #             eight = 1
+    #         else:
+    #             eight = 2
+    #     elif i in range(101, 201):
+    #         quadrant = 2
+    #         if i < 151:
+    #             eight = 3
+    #         else:
+    #             eight = 4
+    #     elif i in range(201, 301):
+    #         quadrant = 3
+    #         if i < 251:
+    #             eight = 5
+    #         else:
+    #             eight = 6
+    #     elif i in range(301, 401):
+    #         quadrant = 4
+    #         if i < 351:
+    #             eight = 7
+    #         else:
+    #             eight = 8
+    #
+    #     name = './test.csv'
+    #     with open(name,'w', newline='') as csv:
+    #         writer = csv.writer(csvfile, delimiter=' ')
+    #         writer.writerow(sample_data + quadrant + eighth + i)
 
 
 

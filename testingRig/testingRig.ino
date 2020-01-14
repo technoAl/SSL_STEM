@@ -23,23 +23,30 @@ void setup() {
   pinMode(SP, OUTPUT);
   resetBEDPins(); //Set step, direction, microstep and enable pins to default states
   Serial.begin(9600); //Open Serial connection for debugging
-  Serial.println("Begin motor control");
-  Serial.println();
+//  Serial.println("Begin motor control");
+//  Serial.println();
+//  Serial.println("Enter number for control option:");
+//  Serial.println("1 for forward");
+//  Serial.println("2 for micro");
+//  Serial.println();
   //Print function list for user selection
-  Serial.println("Enter number for control option:");
-  Serial.println("1 for forward");
-  Serial.println("2 for micro");
-  Serial.println();
+  
 }
 //Main loop
 void loop() {
+  
   while(Serial.available()){
       user_input = Serial.read(); //Read user input and trigger appropriate function
       digitalWrite(EN, LOW); //Pull enable pin low to set FETs active and allow motor control
-      if (user_input =='1')
+      //Serial.println("got one");
+      if (user_input == '1')
       {
+         delay(4000);
          StepForwardDefault();
-         Serial.print("entered");
+         //Serial.print("entered");
+         //tone(13,440);
+         delay(50);
+         //mtone(13, 0);
       }
       else if(user_input =='2')
       {
@@ -55,7 +62,7 @@ void loop() {
         playFrequency(440);
       }
   }
-  }
+}
 
 void playFrequency(int tones){
   tone(SP, tones);
@@ -65,18 +72,24 @@ void playFrequency(int tones){
 
 void StepForwardDefault()
 {
-  Serial.println("input steps");
+  //Serial.println("input steps");
+  
   char input = Serial.read(); //Read user input
+  while(input == -1){
+    input = Serial.read();
+  }
+  delay(4000);
   digitalWrite(dir, LOW); //Pull direction pin low to move "forward"
-  for(int i= 0; x<input; i++)  //Loop the forward stepping enough times for motion to be visible
+  for(int i= 0; i<input; i++)  //Loop the forward stepping enough times for motion to be visible
   {
     digitalWrite(stp,HIGH); //Trigger one step forward
     delay(1);
     digitalWrite(stp,LOW); //Pull step pin low so it can be triggered again
     delay(1);
   }
-  Serial.println("done");
-  Serial.println();
+  
+  //Serial.println("done");
+  //Serial.println();
 }
 
 void SmallStepMode()
