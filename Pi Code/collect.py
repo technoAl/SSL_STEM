@@ -45,9 +45,9 @@ def serialReceive(port, bits): #check and make sure it works
 
 def serialSend(port, message):
     with serial.Serial(port, baudrate = 9600, timeout = 1) as ser:
-        ser.write(message)
-        time.sleep(5)
-        ser.write(message)
+        ser.write(message)#wait extra long for device to be ready
+        time.sleep(6)
+        ser.write(message)#unsure if voltage drop is issue
 
 def serialHS(message, needsCheck, port, expected):#handshake unsure if needed currently
     quit = False
