@@ -1,3 +1,7 @@
+#include <SoftwareSerial.h>
+
+SoftwareSerial mySerial(9, 10);
+
 //Declare pin functions on Arduino
 #define stp 2
 #define dir 3
@@ -23,6 +27,7 @@ void setup() {
   pinMode(SP, OUTPUT);
   resetBEDPins(); //Set step, direction, microstep and enable pins to default states
   Serial.begin(9600); //Open Serial connection for debugging
+  mySerial.begin(9600);
 //  Serial.println("Begin motor control");
 //  Serial.println();
 //  Serial.println("Enter number for control option:");
@@ -35,32 +40,32 @@ void setup() {
 //Main loop
 void loop() {
   
-  while(Serial.available()){
+  while(Serial.available()){  
       user_input = Serial.read(); //Read user input and trigger appropriate function
       digitalWrite(EN, LOW); //Pull enable pin low to set FETs active and allow motor control
+      //StepForwardDefault();
       //Serial.println("got one");
       if (user_input == '1')
       {
-         delay(4000);
          StepForwardDefault();
          //Serial.print("entered");
          //tone(13,440);
          delay(50);
          //mtone(13, 0);
       }
-      else if(user_input =='2')
-      {
-        SmallStepMode();
-        Serial.print("entered");
-      }
-      else
-      {
-        Serial.println("Bad Communication");
-      }
-      resetBEDPins();
-      if(user_input == 'p'){
-        playFrequency(440);
-      }
+//      else if(user_input =='2')
+//      {
+//        SmallStepMode();
+//        Serial.print("entered");
+//      }
+//      else
+//      {
+//        Serial.println("Bad Communication");
+//      }
+//      resetBEDPins();
+//      if(user_input == 'p'){
+//        playFrequency(440);
+//      }
   }
 }
 
@@ -75,10 +80,9 @@ void StepForwardDefault()
   //Serial.println("input steps");
   
   char input = Serial.read(); //Read user input
-  while(input == -1){
+  while(input == -1){ 
     input = Serial.read();
   }
-  delay(4000);
   digitalWrite(dir, LOW); //Pull direction pin low to move "forward"
   for(int i= 0; i<input; i++)  //Loop the forward stepping enough times for motion to be visible
   {
@@ -100,7 +104,7 @@ void SmallStepMode()
   digitalWrite(MS1, HIGH); //Pull MS1,MS2, and MS3 high to set logic to 1/16th microstep resolution
   digitalWrite(MS2, HIGH);
   digitalWrite(MS3, HIGH);
-  for(int i= 0; i<input; i++)  //Loop the forward stepping enough times for motion to be visible
+  for(int i= 0; i<1; i++)  //Loop the forward stepping enough times for motion to be visible
   {
     digitalWrite(stp,HIGH); //Trigger one step forward
     delay(1);

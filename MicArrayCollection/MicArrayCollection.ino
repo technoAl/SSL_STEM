@@ -26,7 +26,7 @@ void loop(){
   char RPIbit = Serial.read();
   if(RPIbit == 'r'){
     primingBitRPI = true;
-    Serial.write("c")
+    Serial.write("c");
   }
   
   //record audio if both other devices are ready
@@ -66,5 +66,3 @@ void recordBits(long progress){
     Serial.println("audLB");
     Serial.println(audLB);
 }
-
-

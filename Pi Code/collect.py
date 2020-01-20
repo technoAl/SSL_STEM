@@ -38,15 +38,16 @@ def collect(steps):
 
 def serialReceive(port, bits): #check and make sure it works
     input = np.array()
-    with serial.Serial(port, 9600) as ser:
+    with serial.Serial(port, 9600, stopbits=None) as ser:
         for i in range(0, sampleWindow):
             input.append(ser.read(bits), axis=0)
     return input
 
 def serialSend(port, message):
-    with serial.Serial(port, baudrate = 9600, timeout = 1) as ser:
+    with serial.Serial(port, baudrate = 9600) as ser:
+        time.sleep(2);
         ser.write(message)#wait extra long for device to be ready
-        time.sleep(6)
+        time.sleep(1);
         ser.write(message)#unsure if voltage drop is issue
 
 def serialHS(message, needsCheck, port, expected):#handshake unsure if needed currently
