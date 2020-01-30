@@ -10,7 +10,7 @@ const int micLB = A1;
 boolean primingBitRPI = false;
 
 const int samples = 128;
-const int freq = 1000;
+const int freq = 1000;//check this
 const int sampleWindowWidth = round(1000000*(1.0/freq));//length of each window check in milliseconds
 const int wait = 10;
 void setup(){
