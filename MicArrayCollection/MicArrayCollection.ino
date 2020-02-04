@@ -35,10 +35,11 @@ void loop(){
       int currentSample = 0;
       while(currentSample < samples){//artificially create sample window
         recordBits(currentSample);//record bits
-        int progress = millis();
-        while(millis() < progress + sampleWindowWidth){
-          //only progress after sample rate is over
-        }
+//        int progress = millis();
+//        while(millis() < progress + sampleWindowWidth){
+//          //only progress after sample rate is over
+//        }
+        delay(500);
         currentSample++;
       }
       //reset the device after the window was sampled
