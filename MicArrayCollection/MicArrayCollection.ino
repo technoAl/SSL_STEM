@@ -9,7 +9,7 @@ const int micLB = A1;
 //Receiving Bits from RPI and TR
 boolean primingBitRPI = false;
 
-const int samples = 1500;
+const int samples = 2500;
 const double freq = 1.0/2500.0 ;//check this
 const int wait = 1000;
 void setup(){
@@ -17,16 +17,16 @@ void setup(){
   pinMode(micRB, INPUT);
   pinMode(micLF, INPUT);
   pinMode(micLB, INPUT);
-  Serial.begin(1000000);//serial connected to Raspberry Pi
+  Serial.begin(1152000);//serial connected to Raspberry Pi
 }
 
 void loop(){
   //Look for primer bits from TR and RPI
-  char RPIbit = Serial.read();
-  if(RPIbit == 'r'){
-    primingBitRPI = true;
-    Serial.write("c");
-  }
+    char RPIbit = Serial.read();
+    if(RPIbit == '1'){
+      primingBitRPI = true;
+    }
+ 
   
   //record audio if both other devices are ready
   if(primingBitRPI){

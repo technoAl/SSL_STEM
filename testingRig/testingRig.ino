@@ -9,6 +9,7 @@
 
 //Declare variables for functions
 char user_input;
+int r = 1;
 int x;
 int y;
 int state;
@@ -35,8 +36,10 @@ void setup() {
 //Main loop
 void loop() {
   
-  while(Serial.available()){  
+  if(Serial.available()){  
       user_input = Serial.read(); //Read user input and trigger appropriate function
+      char input2 = Serial.read();
+      r = r * (user_input - '0');  //conveting the value of chars to integer
       digitalWrite(EN, LOW); //Pull enable pin low to set FETs active and allow motor control
       //StepForwardDefault();
       //Serial.println("got one");
@@ -48,11 +51,13 @@ void loop() {
          delay(50);
          //mtone(13, 0);
       }
-      else if(user_input =='2')
+      else if(user_input == '0')
       {
-       delay(5000);//wait 5 seconds
-       tone(13, 600, 500);
+        delay(3000);
+       tone(11, 600, 500);
+       delay(50);
       }
+
 //      else
 //      {
 //        Serial.println("Bad Communication");
