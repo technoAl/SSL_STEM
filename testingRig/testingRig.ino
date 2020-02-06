@@ -43,6 +43,7 @@ void loop() {
       if (user_input == '1')
       { 
          StepForwardDefault();
+        
          //tone(13,440);
          delay(50);
          //mtone(13, 0);
@@ -73,12 +74,12 @@ void StepForwardDefault()
 {
   //Serial.println("input steps");
   
-  char input = Serial.read(); //Read user input
-  while(input == -1){ 
-    input = Serial.read();
-  }
+//  char input = Serial.read(); //Read user input
+//  while(input == -1){ 
+//    input = Serial.read();
+//  }
   digitalWrite(dir, LOW); //Pull direction pin low to move "forward"
-  for(int i= 0; i<1; i++)  //Loop the forward stepping enough times for motion to be visible
+  for(int i= 0; i<3; i++)  //Loop the forward stepping enough times for motion to be visible
   { 
     digitalWrite(stp,HIGH); //Trigger one step forward
     delay(1);
@@ -86,27 +87,25 @@ void StepForwardDefault()
     delay(1);
   }
   
-  //Serial.println("done");
+  //Serial.println(count);
   //Serial.println();
 }
 
 void SmallStepMode()
 {
-  Serial.println("Stepping at 1/16th microstep mode, input amount of steps");
-  char input = Serial.read(); //Read user input
+
   digitalWrite(dir, LOW); //Pull direction pin low to move "forward"
   digitalWrite(MS1, HIGH); //Pull MS1,MS2, and MS3 high to set logic to 1/16th microstep resolution
   digitalWrite(MS2, HIGH);
   digitalWrite(MS3, HIGH);
-  for(int i= 0; i<1; i++)  //Loop the forward stepping enough times for motion to be visible
+  for(int i= 0; i<16; i++)  //Loop the forward stepping enough times for motion to be visible
   {
     digitalWrite(stp,HIGH); //Trigger one step forward
     delay(1);
     digitalWrite(stp,LOW); //Pull step pin low so it can be triggered again
     delay(1);
   }
-  Serial.println("done");
-  Serial.println();
+
 }
 void resetBEDPins()//reset keeps everything clean
 {
