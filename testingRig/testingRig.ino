@@ -1,7 +1,3 @@
-#include <SoftwareSerial.h>
-
-SoftwareSerial mySerial(9, 10);
-
 //Declare pin functions on Arduino
 #define stp 2
 #define dir 3
@@ -27,7 +23,6 @@ void setup() {
   pinMode(SP, OUTPUT);
   resetBEDPins(); //Set step, direction, microstep and enable pins to default states
   Serial.begin(9600); //Open Serial connection for debugging
-  mySerial.begin(9600);
 //  Serial.println("Begin motor control");
 //  Serial.println();
 //  Serial.println("Enter number for control option:");
@@ -46,18 +41,17 @@ void loop() {
       //StepForwardDefault();
       //Serial.println("got one");
       if (user_input == '1')
-      {
+      { 
          StepForwardDefault();
-         //Serial.print("entered");
          //tone(13,440);
          delay(50);
          //mtone(13, 0);
       }
-//      else if(user_input =='2')
-//      {
-//        SmallStepMode();
-//        Serial.print("entered");
-//      }
+      else if(user_input =='2')
+      {
+       delay(5000);//wait 5 seconds
+       tone(13, 600, 500);
+      }
 //      else
 //      {
 //        Serial.println("Bad Communication");
@@ -84,8 +78,8 @@ void StepForwardDefault()
     input = Serial.read();
   }
   digitalWrite(dir, LOW); //Pull direction pin low to move "forward"
-  for(int i= 0; i<input; i++)  //Loop the forward stepping enough times for motion to be visible
-  {
+  for(int i= 0; i<1; i++)  //Loop the forward stepping enough times for motion to be visible
+  { 
     digitalWrite(stp,HIGH); //Trigger one step forward
     delay(1);
     digitalWrite(stp,LOW); //Pull step pin low so it can be triggered again

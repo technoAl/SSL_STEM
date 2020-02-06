@@ -9,16 +9,15 @@ const int micLB = A1;
 //Receiving Bits from RPI and TR
 boolean primingBitRPI = false;
 
-const int samples = 128;
-const int freq = 1000;//check this
-const int sampleWindowWidth = round(1000000*(1.0/freq));//length of each window check in milliseconds
-const int wait = 10;
+const int samples = 1500;
+const double freq = 1.0/2500.0 ;//check this
+const int wait = 1000;
 void setup(){
   pinMode(micRF, INPUT);
   pinMode(micRB, INPUT);
   pinMode(micLF, INPUT);
   pinMode(micLB, INPUT);
-  Serial.begin(9600);//serial connected to Raspberry Pi
+  Serial.begin(1000000);//serial connected to Raspberry Pi
 }
 
 void loop(){
@@ -35,11 +34,6 @@ void loop(){
       int currentSample = 0;
       while(currentSample < samples){//artificially create sample window
         recordBits(currentSample);//record bits
-//        int progress = millis();
-//        while(millis() < progress + sampleWindowWidth){
-//          //only progress after sample rate is over
-//        }
-        delay(500);
         currentSample++;
       }
       //reset the device after the window was sampled
@@ -50,20 +44,15 @@ void loop(){
 
 void recordBits(long progress){
     //read data from mic array
-    float audRF = analogRead(micRF);
-    float audRB = analogRead(micRB);
-    float audLF = analogRead(micLF);
-    float audLB = analogRead(micLB);
+    unsigned int audRF = analogRead(micRF);
+    unsigned int audRB = analogRead(micRB);
+    unsigned int audLF = analogRead(micLF);
+    unsigned int audLB = analogRead(micLB);
     
     //send data to raspberry pi
-    Serial.println("Time ");
     Serial.println(progress);
-    Serial.println("audRF");
     Serial.println(audRF);
-    Serial.println("audRB");
     Serial.println(audRB);
-    Serial.println("audLF");
     Serial.println(audLF);
-    Serial.println("audLB");
     Serial.println(audLB);
 }
