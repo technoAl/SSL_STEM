@@ -105,11 +105,11 @@ history = model.fit(x_train, y_trainFourths, epochs=200, batch_size=2, validatio
 # In[ ]:
 
 
-loss = history.history['loss']
-plt.plot(loss)
-acc = history.history['accuracy']
-plt.plot(acc)
-val_acc = history.history['val_accuracy']
-plt.plot(val_acc)
-plt.ylim(0,5)
+# loss = history.history['loss']
+# plt.plot(loss)
+# acc = history.history['accuracy']
+# plt.plot(acc)
+# val_acc = history.history['val_accuracy']
+# plt.plot(val_acc)
+# plt.ylim(0,5)
 
