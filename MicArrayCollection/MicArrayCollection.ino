@@ -26,11 +26,8 @@ void loop(){
     if(RPIbit == '1'){
       primingBitRPI = true;
     }
- 
-  
   //record audio if both other devices are ready
   if(primingBitRPI){
-      delay(wait);//delay a few seconds for the audio rig to be ready
       int currentSample = 0;
       while(currentSample < samples){//artificially create sample window
         recordBits(currentSample);//record bits

@@ -35,7 +35,6 @@ void setup() {
 }
 //Main loop
 void loop() {
-  
   if(Serial.available()){  
       user_input = Serial.read(); //Read user input and trigger appropriate function
       char input2 = Serial.read();
@@ -46,16 +45,16 @@ void loop() {
       if (user_input == '1')
       { 
          StepForwardDefault();
-        
          //tone(13,440);
          delay(50);
          //mtone(13, 0);
       }
       else if(user_input == '0')
       {
-        delay(3000);
+       delay(1000);
        tone(11, 600, 500);
-       delay(50);
+       delay(750);
+       digitalWrite(11, LOW);
       }
 
 //      else
