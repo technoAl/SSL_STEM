@@ -9,7 +9,7 @@ const int micLB = A1;
 //Receiving Bits from RPI and TR
 boolean primingBitRPI = false;
 
-const int samples = 2500;
+const int samples = 1000;
 const double freq = 1.0/2500.0 ;//check this
 const int wait = 1000;
 void setup(){

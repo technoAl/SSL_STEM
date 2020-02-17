@@ -54,9 +54,9 @@ if __name__ == '__main__':
         with serial.Serial(MAport, baudrate=1152000) as ma:
             time.sleep(1)
             for i in range(0,600):
-                time.sleep(2)
+                time.sleep(0.5)
                 tr.write(b'1') #move tr
-                time.sleep(1)
+                time.sleep(0.5)
                 tr.write(b'0') # play sound from TR after delay
                 name = './test.csv'
                 rf = []
@@ -68,7 +68,7 @@ if __name__ == '__main__':
                 time.sleep(0.05)
                 a = 0
                 count = 0
-                while count < 2500:
+                while count < 1000:
                     a = ma.readline()
                     rf.append(ma.readline())
                     rb.append(ma.readline())

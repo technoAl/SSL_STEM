@@ -83,7 +83,7 @@ void StepForwardDefault()
 //    input = Serial.read();
 //  }
   digitalWrite(dir, LOW); //Pull direction pin low to move "forward"
-  for(int i= 0; i<3; i++)  //Loop the forward stepping enough times for motion to be visible
+  for(int i= 0; i<20; i++)  //Loop the forward stepping enough times for motion to be visible
   { 
     digitalWrite(stp,HIGH); //Trigger one step forward
     delay(1);
@@ -102,7 +102,7 @@ void SmallStepMode()
   digitalWrite(MS1, HIGH); //Pull MS1,MS2, and MS3 high to set logic to 1/16th microstep resolution
   digitalWrite(MS2, HIGH);
   digitalWrite(MS3, HIGH);
-  for(int i= 0; i<16; i++)  //Loop the forward stepping enough times for motion to be visible
+  for(int i= 0; i<30; i++)  //Loop the forward stepping enough times for motion to be visible
   {
     digitalWrite(stp,HIGH); //Trigger one step forward
     delay(1);
